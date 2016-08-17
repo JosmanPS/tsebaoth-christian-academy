@@ -76,3 +76,9 @@ media/*
 media/
 .\#*
 .Rhistory
+
+#
+# Google CLoud
+#
+lib/*
+lib/
