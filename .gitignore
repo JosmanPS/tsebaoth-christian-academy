@@ -1,0 +1,78 @@
+#
+# Django
+#
+**/static_root/
+**/media_root/*
+
+#
+# Angular
+#
+.idea
+typings/**
+node_modules
+jspm_packages
+link-checker-results.txt
+**/*npm-debug.log.*
+_test-output
+_temp
+!karma*.js
+!systemjs.config.js
+!typings/typings.d.ts
+
+#
+# SSL Certificates
+#
+*.pem
+
+#
+# Compiled source
+#
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+
+#
+# Logs and databases
+#
+*.log
+*.sql
+*.sqlite
+
+#
+# OS generated files
+#
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+#
+# Python
+#
+nosetests.xml
+coverage.xml
+restoredb.py
+.cache/
+
+#
+# Test Reports
+#
+cover
+.coverage
+
+#
+# Others
+#
+**/devops/static/*
+media/*
+media/
+.\#*
+.Rhistory
