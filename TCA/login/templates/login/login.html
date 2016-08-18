@@ -1,0 +1,38 @@
+{% extends '_layouts/base_with_menu.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Iniciar sesión</h1>
+
+  {% if message %}
+  <div class="row">
+    <blockquote>{{ message }}</blockquote>
+  </div>
+  {% endif %}
+
+  <div class="row">
+    <form class="col s12" action="/accounts/login/" method="post">
+      {% csrf_token %}
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="username" type="text" class="validate" name="username">
+          <label for="username">Usuario</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="password" type="password" class="validate" name="password">
+          <label for="password">Contraseña</label>
+        </div>
+      </div>
+      <div class="row" style="float:right">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

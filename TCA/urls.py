@@ -14,14 +14,16 @@ Including another URLconf
     2. Import the include() function: from django.conf.urls import url, include
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 
 from .views import index
 
 urlpatterns = [
+    url(r'^$', index),
+
     url(r'^admin/', admin.site.urls),
-    url(r'^', index),
+    url(r'^accounts/', include('TCA.login.urls')),
 ]
 
 admin.site.site_header = 'Tsebaoth Christian Academy'

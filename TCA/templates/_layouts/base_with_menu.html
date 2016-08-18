@@ -1,0 +1,19 @@
+{% extends '_layouts/base.html' %}
+
+{% block right_links %}
+    <li><a href="/admin/">Administración</a></li>
+    <li><a href="/dashboard/">MyTCA</a></li>
+    {% if user.is_authenticated %}
+        <li><a href="/accounts/logout/">Cerrar sesión</a></li>
+    {% endif %}
+    <li><a href="/accounts/logout/">Cerrar sesión</a></li>
+{% endblock %}
+
+{% block side_links %}
+    <li><a href="/admin/">Administración</a></li>
+    <li><a href="/dashboard/">MyTCA</a></li>
+    {% if user.is_authenticated %}
+        <li><a href="/accounts/logout/">Cerrar sesión</a></li>
+    {% endif %}
+    <li><a href="/accounts/logout/">Cerrar sesión</a></li>
+{% endblock %}
