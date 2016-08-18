@@ -23,7 +23,7 @@ version: 1
 
 handlers:
 - url: /static
-  static_dir: TCA/static/
+  static_dir: TCA/devops/static/
 - url: .*
   script: TCA.wsgi.application
 
