@@ -77,13 +77,28 @@ WSGI_APPLICATION = 'TCA.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
+    # Running on production App Engine, so use a Google Cloud SQL database.
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/tsebaoth-academy:tca-database',
+            'NAME': 'tca',
+            'USER': 'tca',
+            'PASSWORD': 'tca_password'
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '127.0.0.1',
+            'NAME': 'tca',
+            'USER': 'tca',
+            'PASSWORD': 'tca_password'
+            # 'TEST_NAME': 'tests_database',
+        }
+    }
 
 
 # Password validation
