@@ -1,0 +1,30 @@
+{% extends '_layouts/base_with_menu.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="header">{{ course.key }} - {{ course.name }}</h1>
+    <div class="divider"></div>
+    <h4>Asistencia</h4>
+    {% if not attendance %}
+        <blockquote>No has tomado asistencia el día de hoy.</blockquote>
+        <div class="row" style="float:right">
+            <a class="waves-effect waves-light btn-large"><i class="material-icons left">supervisor_account</i>Tomar asistencia</a>
+        </div>
+    {% else %}
+        <div class="row" style="float:right">
+            <a class="waves-effect waves-light btn-large"><i class="material-icons left">supervisor_account</i>Editar asistencia</a>
+        </div>
+    {% endif %}
+    <div class="row"></div>
+    <div class="divider"></div>
+    <h4>Mis tareas</h4>
+    {% if not tasks %}
+        <blockquote>No tienes ninguna tarea registrada.</blockquote>
+    {% else %}
+        <!-- TODO: Table with tasks -->
+    {% endif %}
+    <div class="row" style="float:right">
+        <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+    </div>
+</div>
+{% endblock %}

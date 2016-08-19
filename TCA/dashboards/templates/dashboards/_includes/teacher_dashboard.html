@@ -1,5 +1,13 @@
 <h4>Mis cursos</h4>
 
+{% if not courses %}
+
+<blockquote>No tienes registrado ningún curso. Es necesario que un administrador haga esta acción.</blockquote>
+
+{% else %}
+
+<p>Haz click en un curso para agregar tareas o tomar asistencia.</p>
+
 <div class="row">
     <table class="highlight">
         <thead>
@@ -12,7 +20,7 @@
         <tbody>
             {% for course in courses %}
             <tr>
-                <td>{{ course.key }}</td>
+                <td><a href="{% url 'dashboards.course' course.key %}">{{ course.key }}</a></td>
                 <td>{{ course.name }}</td>
                 <td>{{ course.grade }}</td>
             </tr>
@@ -20,3 +28,5 @@
         </tbody>
     </table>
 </div>
+
+{% endif %}

@@ -1,10 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 
 from TCA.administration.utils import get_user_type
-from TCA.administration.models import Teacher
+from TCA.administration.models import Course, Teacher
+
+
+#
+#           Main Dashboard views
+#
 
 
 class Dashboard(View):
@@ -28,6 +33,8 @@ class Dashboard(View):
         user = get_user_type(request.user)
         if user == 'teacher':
             return TeacherDashboard().get(request)
+        elif user == 'admin':
+            return AdminDashboard().get(request)
         else:
             return UserDashboard().get(request)
 
@@ -60,3 +67,31 @@ class TeacherDashboard(UserDashboard):
 
     def _get_teacher_courses(self, user_object):
         return user_object.courses.all()
+
+
+class AdminDashboard(UserDashboard):
+    """Redirect to the site's admin page."""
+
+    user_type = 'admin'
+
+    def get(self, request):
+        """Redirect to the site's admin page."""
+        return redirect('/admin/')
+
+
+#
+#           Courses views
+#
+
+class CourseView(View):
+    """View class for control actions related to a registered course."""
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        """Ask for login."""
+        return super(CourseView, self).dispatch(*args, **kwargs)
+
+    def get(self, request, course_key):
+        """Send a `Course` object."""
+        course = get_object_or_404(Course, key=course_key)
+        return render(request, 'dashboards/course.html', {'course': course})
