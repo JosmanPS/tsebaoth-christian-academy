@@ -2,6 +2,14 @@
 
 {% block content %}
 <div class="container">
-  <h1>Dashboards</h1>
+  <h1 class="header">My TCA</h1>
+  <!-- <p class="caption">Bienvenido, {{ user.username }}.</p> -->
+
+  <div class="divider"></div>
+
+  {% if user_type == 'teacher' %}
+    {% include 'dashboards/_includes/teacher_dashboard.html' %}
+  {% endif %}
+
 </div>
 {% endblock %}

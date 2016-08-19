@@ -1,0 +1,22 @@
+<h4>Mis cursos</h4>
+
+<div class="row">
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>Clave</th>
+                <th>Nombre</th>
+                <th>Grado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.key }}</td>
+                <td>{{ course.name }}</td>
+                <td>{{ course.grade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

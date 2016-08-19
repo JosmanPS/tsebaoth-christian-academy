@@ -12,3 +12,21 @@
 .icon-block .material-icons {
 	font-size: inherit;
 }
+html{
+  position:relative; 
+  min-height: 100%;
+}
+/*Normalize html and body elements,this style is just good to have*/
+html,body{
+  margin:0;
+  padding:0;
+}
+.pageContentWrapper{
+  margin-bottom:100px;/* Height of footer*/
+} 
+footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

@@ -1,8 +1,8 @@
 from django.conf.urls import url
 
-from .views import main
+from .views import Dashboard
 
 
 urlpatterns = [
-    url(r'^main/$', main, name='dashboards.main'),
+    url(r'^main/$', Dashboard.as_view(), name='dashboards.main'),
 ]
