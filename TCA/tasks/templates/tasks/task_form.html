@@ -3,38 +3,41 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <h1 class="header">Crear tarea</h1>
+        <h1 class="header">Crear tarea en {{ course.key }} - {{ course.name }}</h1>
     </div>
     <div class="row">
-        <form class="col s12" method="post" action="{% url 'tasks.form' course.key %}">
+        <form class="col s12" method="post" {% if task %}action="{% url 'tasks.form.modify' course.key task.id %}"{% else %}action="{% url 'tasks.form' course.key %}"{% endif %}>
             {% csrf_token %}
+            {% if task %}
+                <input type="hidden" name="id" value="{{ task.id }}">
+            {% endif %}
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="name" name="name" type="text" class="validate">
+                    <input id="name" name="name" type="text" class="validate" {% if task %}value="{{ task.name }}"{% endif %}>
                     <label for="name">Nombre</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <textarea id="description" name="description" class="materialize-textarea"></textarea>
+                    <textarea id="description" name="description" class="materialize-textarea">{% if task %}{{ task.description }}{% endif %}</textarea>
                     <label for="description">Descripción</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="due_date" name="due_date" type="date" class="datepicker">
+                    <input id="due_date" name="due_date" type="date" class="datepicker" {% if task %}value="{{ task.due_date }}"{% endif %}>
                     <label for="due_date">Fecha de entrega</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="value" name="value" type="number" class="validate">
+                    <input id="value" name="value" type="number" class="validate" {% if task %}value="{{ task.value }}"{% endif %}>
                     <label for="value">Valor en calificación final</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="need_response" name="need_response" type="checkbox">
+                    <input id="need_response" name="need_response" type="checkbox" {% if task.need_response %}checked="checked"{% endif %}>
                     <label for="need_response">¿El alumno debe enviar respuesta?</label>
                 </div>
             </div>

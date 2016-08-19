@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 
 from TCA.administration.utils import get_user_type
 from TCA.administration.models import Course, Teacher
+from TCA.tasks.models import Task
 
 
 #
@@ -94,4 +95,9 @@ class CourseView(View):
     def get(self, request, course_key):
         """Send a `Course` object."""
         course = get_object_or_404(Course, key=course_key)
-        return render(request, 'dashboards/course.html', {'course': course})
+        context = {'course': course}
+        context['tasks'] = self._get_course_tasks(course)
+        return render(request, 'dashboards/course.html', context)
+
+    def _get_course_tasks(self, course):
+        return Task.objects.filter(course=course)

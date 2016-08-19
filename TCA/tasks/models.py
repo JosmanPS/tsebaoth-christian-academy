@@ -41,3 +41,4 @@ class Task(TimeStamped):
         verbose_name = 'Tarea'
         verbose_name_plural = 'Tareas'
         unique_together = ('course', 'slug')
+        ordering = ['course', 'due_date', 'slug']

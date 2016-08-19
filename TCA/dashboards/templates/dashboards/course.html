@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="container">
+    {% csrf_token %}
     <h1 class="header">{{ course.key }} - {{ course.name }}</h1>
     <div class="divider"></div>
     <h4>Asistencia</h4>
@@ -21,10 +22,72 @@
     {% if not tasks %}
         <blockquote>No tienes ninguna tarea registrada.</blockquote>
     {% else %}
-        <!-- TODO: Table with tasks -->
+        <div class="row">
+            <table class="highlight">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Fecha de entrega</th>
+                        <th>Valor</th>
+                        <th>¿Necesita respuesta?</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.due_date }}</td>
+                        <td>{{ task.value }}</td>
+                        <td>{{ task.need_response }}</td>
+                        <td>
+                            <a href="{% url 'tasks.form.modify' course.key task.id %}" class="btn-floating waves-effect waves-light blue"><i class="material-icons">mode_edit</i></a>
+                            <a href="#" onclick="delete_task({{ task.id }});" class="btn-floating waves-effect waves-light red"><i class="material-icons">delete</i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endif %}
     <div class="row" style="float:right">
         <a href="{% url 'tasks.form' course.key %}" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    function delete_task(id) {
+        var delete_confirmation = confirm(`
+¿Estás seguro de eliminar la tarea?
+Toda la información relacionada se perderá tras esta acción.
+        `);
+        if (delete_confirmation == true) {
+            $.post(`/tasks/delete/task/${id}/`, {'csrfmiddlewaretoken': csrftoken}, function() {
+                location.reload();
+            });
+        }
+    };
+</script>
 {% endblock %}
