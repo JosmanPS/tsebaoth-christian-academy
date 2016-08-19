@@ -1,0 +1,58 @@
+{% extends '_layouts/base_with_menu.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1 class="header">Crear tarea</h1>
+    </div>
+    <div class="row">
+        <form class="col s12" method="post" action="{% url 'tasks.form' course.key %}">
+            {% csrf_token %}
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="name" name="name" type="text" class="validate">
+                    <label for="name">Nombre</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="description" name="description" class="materialize-textarea"></textarea>
+                    <label for="description">Descripción</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="due_date" name="due_date" type="date" class="datepicker">
+                    <label for="due_date">Fecha de entrega</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="value" name="value" type="number" class="validate">
+                    <label for="value">Valor en calificación final</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="need_response" name="need_response" type="checkbox">
+                    <label for="need_response">¿El alumno debe enviar respuesta?</label>
+                </div>
+            </div>
+            <div class="row" style="float:right">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('.datepicker').pickadate({
+        selectMonths: true,
+        selectYears: 1
+    });
+</script>
+{% endblock %}

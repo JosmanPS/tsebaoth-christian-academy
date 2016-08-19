@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'TCA.administration',
     'TCA.login',
     'TCA.dashboards',
+    'TCA.tasks'
 ]
 
 MIDDLEWARE_CLASSES = [

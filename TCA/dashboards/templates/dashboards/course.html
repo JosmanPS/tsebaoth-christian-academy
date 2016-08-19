@@ -24,7 +24,7 @@
         <!-- TODO: Table with tasks -->
     {% endif %}
     <div class="row" style="float:right">
-        <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+        <a href="{% url 'tasks.form' course.key %}" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
     </div>
 </div>
 {% endblock %}
