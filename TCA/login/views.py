@@ -3,7 +3,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
-from django.core.urlresolvers import reverse
 
 
 class Login(View):
@@ -13,7 +12,9 @@ class Login(View):
         """Show login form."""
         if request.user.is_authenticated():
             # TODO: Change to dashboards
-            return redirect('/')
+            print request
+            url = request.GET.get('next', '/')
+            return redirect(url)
         return render(request, 'login/login.html')
 
     def post(self, request):
@@ -22,7 +23,9 @@ class Login(View):
         is_valid = self._validate_user(request, user)
         if is_valid:
             login(request, user)
-            return redirect(reverse('accounts.login'))
+            url = request.POST.get('next', '/')
+            print request.POST
+            return redirect(url)
         response = self._return_invalid_message(request)
         return response
 

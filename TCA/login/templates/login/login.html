@@ -11,7 +11,7 @@
   {% endif %}
 
   <div class="row">
-    <form class="col s12" action="/accounts/login/" method="post">
+    <form class="col s12" action="/accounts/login/" method="post" id="login-form">
       {% csrf_token %}
       <div class="row">
         <div class="input-field col s12">
@@ -34,5 +34,17 @@
   </div>
 
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+  var next = QueryString['next'];
+  if (next != undefined) {
+    $('#login-form').append(`
+      <input type="hidden" name="next" value="${next}">
+    `)
+  }
+</script>
 
 {% endblock %}
