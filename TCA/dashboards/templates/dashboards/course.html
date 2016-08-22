@@ -13,7 +13,7 @@
         </div>
     {% else %}
         <div class="row" style="float:right">
-            <a class="waves-effect waves-light btn-large"><i class="material-icons left">supervisor_account</i>Editar asistencia</a>
+            <a href="{% url 'attendance.course' course.key %}" class="waves-effect waves-light btn-large"><i class="material-icons left">supervisor_account</i>Editar asistencia</a>
         </div>
     {% endif %}
     <div class="row"></div>
@@ -22,6 +22,9 @@
     {% if not tasks %}
         <blockquote>No tienes ninguna tarea registrada.</blockquote>
     {% else %}
+        <div class="row">
+            <p>Haz click en alguna tarea para asignar calificaciones.</p>
+        </div>
         <div class="row">
             <table class="highlight">
                 <thead>
@@ -37,7 +40,7 @@
                 <tbody>
                     {% for task in tasks %}
                     <tr>
-                        <td>{{ task.name }}</td>
+                        <td><a href="{% url 'task.responses' task.id %}">{{ task.name }}</a></td>
                         <td>{{ task.description }}</td>
                         <td>{{ task.due_date }}</td>
                         <td>{{ task.value }}</td>

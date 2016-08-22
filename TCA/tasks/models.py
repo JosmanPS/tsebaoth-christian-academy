@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-from TCA.administration.models import Course
+from TCA.administration.models import Course, Student
 from TCA.utils.models.mixins import TimeStamped
 
 
@@ -38,6 +38,26 @@ class Task(TimeStamped):
         verbose_name='El alumno debe enviar respuesta'
     )
 
+    @property
+    def students(self):
+        """Show students assignated to this task."""
+        return Student.objects.filter(grade=self.course.grade)
+
+    @property
+    def responses(self):
+        """Show responses assignated to this task."""
+        return Response.objects.filter(task=self)
+
+    def init_response_objects(self):
+        """Create a Response object for each student in this task."""
+        for student in self.students:
+            Response.objects.create(
+                student=student,
+                task=self,
+                score=0
+            )
+        return self.responses
+
     def __unicode__(self):
         return '%s: %s' % (
             self.course.key,
@@ -49,3 +69,41 @@ class Task(TimeStamped):
         verbose_name_plural = 'Tareas'
         unique_together = ('course', 'slug')
         ordering = ['course', 'due_date', 'slug']
+
+
+class Response(TimeStamped):
+    task = models.ForeignKey(
+        Task,
+        verbose_name='Tarea',
+        db_index=True
+    )
+    student = models.ForeignKey(
+        Student,
+        verbose_name='Estudiante',
+        db_index=True
+    )
+    score = models.FloatField(
+        verbose_name='Calificación'
+    )
+    response = models.TextField(
+        verbose_name='Respuesta'
+    )
+    file = models.FileField(
+        verbose_name='Archivo adjunto'
+    )
+
+    @property
+    def has_answer(self):
+        return (self.response and self.file)
+
+    def __unicode__(self):
+        return '%s: %s' % (
+            self.task,
+            self.student
+        )
+
+    class Meta:
+        verbose_name = 'Respuesta'
+        verbose_name_plural = 'Respuestas'
+        unique_together = ('task', 'student')
+        ordering = ['task', 'student', 'score']

@@ -1,0 +1,146 @@
+{% extends '_layouts/base_with_menu.html' %}
+
+{% block content %}
+<div class="container">
+    {% csrf_token %}
+    <div class="row">
+        <h1 class="header">{{ course.key }} - {{ task.name }}</h1>
+    </div>
+    <div class="row">
+        <p>{{ task.description }}</p>
+    </div>
+    <div class="divider"></div>
+    <div class="row">
+        <h4>Respuestas y calificaciones</h4>
+    </div>
+    <div class="row">
+    {% if task.need_response %}
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <th>Matrícula</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Calificación</th>
+                    <th>Respuesta</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for response in responses %}
+                <tr>
+                    <td>{{ response.student.school_id }}</td>
+                    <td>{{ response.student.name }}</td>
+                    <td>{{ response.student.last_name }}</td>
+                    <td><input type="number" value={{ response.score }} style="width:50px"></td>
+                    <td><a class="modal-trigger" href="#" onclick="open_response_modal({{ forloop.counter0 }})">Ver respuesta</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <th>Matrícula</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Calificación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for response in responses %}
+                <tr>
+                    <td>{{ response.student.school_id }}</td>
+                    <td>{{ response.student.name }}</td>
+                    <td>{{ response.student.last_name }}</td>
+                    <td><input type="number" value={{ response.score }} style="width:50px"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    </div>
+    <div class="row" style="float:right">
+        <button class="btn waves-effect waves-light" type="submit" name="action" onclick="save_changes()">Guardar cambios
+            <i class="material-icons right">send</i>
+        </button>
+    </div>
+</div>
+
+<div id="response-modal" class="modal">
+    <div class="modal-content">
+        <h4>Respuesta enviada</h4>
+        <p id="response-text">A bunch of text.</p>
+        <div id="response-file"></div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% if task.need_response %}
+<script type="text/javascript">
+    var responses = [];
+    {% for response in responses %}
+        var data = {
+            'text': '{{ response.response }}',
+            'file': '{% if response.file %}{{ response.file.url }}{% endif %}'
+        };
+        responses.push(data);
+    {% endfor %}
+
+    function open_response_modal(index) {
+        var response = responses[index];
+        if (!(response.text || response.file)) {
+            $('#response-text').html(`
+                <blockquote>No ha sido enviado.</blockquote>
+            `);
+        } else {
+            $('#response-text').html(response.text);
+        }
+        if (response.file) {
+            $('#response-file').html(`
+                <a href="${response.file}">Archivo adjunto</a>
+            `);
+        }
+        $('#response-modal').openModal();
+    };
+</script>
+{% endif %}
+<script type="text/javascript">
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrftoken = getCookie('csrftoken');
+
+    function save_changes() {
+        var data = {"csrfmiddlewaretoken": csrftoken};
+        var inputs = $('input[type=number]');
+        data['inputs'] = $.map(inputs, function(obj) {return $(obj).val()})
+        $.post("{% url 'task.responses' task.id %}", data)
+            .done(function() {
+                Materialize.toast('¡Todos los cambios guardados!', 4000)
+            })
+            .fail(function(xhr, status, error) {
+                Materialize.toast(error, 4000)
+            });
+    };
+</script>
+{% endblock %}
