@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^accounts/', include('TCA.login.urls')),
     url(r'^dashboards/', include('TCA.dashboards.urls')),
     url(r'^tasks/', include('TCA.tasks.urls')),
+    url(r'^attendance/', include('TCA.attendance.urls')),
 ]
 
 admin.site.site_header = 'Tsebaoth Christian Academy'

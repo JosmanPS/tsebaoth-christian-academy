@@ -9,7 +9,7 @@
     {% if not attendance %}
         <blockquote>No has tomado asistencia el día de hoy.</blockquote>
         <div class="row" style="float:right">
-            <a class="waves-effect waves-light btn-large"><i class="material-icons left">supervisor_account</i>Tomar asistencia</a>
+            <a href="{% url 'attendance.course' course.key %}" class="waves-effect waves-light btn-large"><i class="material-icons left">supervisor_account</i>Tomar asistencia</a>
         </div>
     {% else %}
         <div class="row" style="float:right">

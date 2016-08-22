@@ -27,7 +27,8 @@ class Task(TimeStamped):
         verbose_name='Descipción'
     )
     due_date = models.DateField(
-        verbose_name='Fecha de entrega'
+        verbose_name='Fecha de entrega',
+        db_index=True
     )
     value = models.FloatField(
         verbose_name='Valor en calificación final'
@@ -36,6 +37,12 @@ class Task(TimeStamped):
         default=False,
         verbose_name='El alumno debe enviar respuesta'
     )
+
+    def __unicode__(self):
+        return '%s: %s' % (
+            self.course.key,
+            self.name
+        )
 
     class Meta:
         verbose_name = 'Tarea'

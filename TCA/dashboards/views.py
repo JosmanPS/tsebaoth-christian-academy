@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
@@ -5,6 +7,7 @@ from django.utils.decorators import method_decorator
 
 from TCA.administration.utils import get_user_type
 from TCA.administration.models import Course, Teacher
+from TCA.attendance.models import Attendance
 from TCA.tasks.models import Task
 
 
@@ -97,6 +100,13 @@ class CourseView(View):
         course = get_object_or_404(Course, key=course_key)
         context = {'course': course}
         context['tasks'] = self._get_course_tasks(course)
+        attendance = Attendance.objects.filter(
+            course=course,
+            date=datetime.today().date()
+        )
+        if attendance:
+            attendance = attendance[0]
+        context['attendance'] = attendance
         return render(request, 'dashboards/course.html', context)
 
     def _get_course_tasks(self, course):

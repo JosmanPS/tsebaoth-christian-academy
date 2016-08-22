@@ -1,0 +1,102 @@
+{% extends '_layouts/base_with_menu.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1 class="header">{{ course.key }} - Asistencia del día</h1>
+        <h4>{{ date }}</h4>
+    </div>
+    <div class="divider"></div>
+    {% if not course.students %}
+    <div class="row">
+        <blockquote>No hay alumnos registrados en este curso.</blockquote>
+    </div>
+    {% else %}
+        {% csrf_token %}
+        <div class="row">
+            <table class="highlight">
+                <thead>
+                    <tr>
+                        <th>Asistencia</th>
+                        <th>Fotografía</th>
+                        <th>Matrícula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                    </tr>
+                </thead>
+                {% if not attendance %}
+                <tbody>
+                {% for student in course.students %}
+                    <tr>
+                        <td><input type="checkbox" id="attendance_{{ student.school_id }}" /><label for="attendance_{{ student.school_id }}"></label></td>
+                        <td><!-- Fotografía --></td>
+                        <td>{{ student.school_id }}</td>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.last_name }}</td>
+                    </tr>    
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <tbody>
+                {% for student in course.students %}
+                    <tr>
+                        <td><input type="checkbox" id="attendance_{{ student.school_id }}" {% if student.school_id in attendance %}checked="checked"{% endif %}/><label for="attendance_{{ student.school_id }}"></label></td>
+                        <td><!-- Fotografía --></td>
+                        <td>{{ student.school_id }}</td>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.last_name }}</td>
+                    </tr>  
+                {% endfor %}
+                </tbody>
+                {% endif %}
+            </table>
+        </div>
+        <div class="row" style="float:right">
+            <button class="btn waves-effect waves-light" type="submit" name="action" onclick="send_attendance()">Submit <i class="material-icons right">send</i></button>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrftoken = getCookie('csrftoken');
+    
+    function send_attendance() {
+        var boxes = $('input:checkbox');
+        var checked_boxes = [];
+        for (var i = 0; i < boxes.length; i++) {
+            var box = $(boxes[i]);
+            if (box.prop('checked')) {
+                var school_id = box.prop('id').split('_')[1];
+                checked_boxes.push(school_id);
+            }
+        }
+        $.redirect(
+            "{% url 'attendance.course' course.key %}",
+            {
+                "csrfmiddlewaretoken": csrftoken,
+                "attendance": checked_boxes,
+                "date": "{{ date }}"
+            }
+        )
+    };
+</script>
+{% endblock %}

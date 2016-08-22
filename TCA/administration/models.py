@@ -44,6 +44,13 @@ class Course(TimeStamped):
         verbose_name='Grado escolar'
     )
 
+    @property
+    def students(self):
+        """Show the students registered for this course."""
+        return Student.objects.filter(
+            grade=self.grade
+        )
+
     def __unicode__(self):
         return '%s - %s' % (
             self.key,
