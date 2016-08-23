@@ -53,8 +53,7 @@ class Task(TimeStamped):
         for student in self.students:
             Response.objects.create(
                 student=student,
-                task=self,
-                score=0
+                task=self
             )
         return self.responses
 
@@ -83,7 +82,9 @@ class Response(TimeStamped):
         db_index=True
     )
     score = models.FloatField(
-        verbose_name='Calificación'
+        verbose_name='Calificación',
+        blank=True,
+        null=True
     )
     response = models.TextField(
         verbose_name='Respuesta'
