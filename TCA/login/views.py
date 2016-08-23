@@ -21,7 +21,7 @@ class Login(View):
         """Authenticate and redirect login."""
         user = self._authenticate(request)
         is_valid = self._validate_user(request, user)
-        if is_valid:
+        if user and is_valid:
             login(request, user)
             url = request.POST.get('next', '/')
             print request.POST
@@ -36,7 +36,7 @@ class Login(View):
         return user
 
     def _validate_user(self, request, user):
-        if user is None:
+        if not user:
             return self._return_invalid_message(request)
         return True
 
