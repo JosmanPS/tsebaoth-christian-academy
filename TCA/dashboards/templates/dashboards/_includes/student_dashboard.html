@@ -1,0 +1,106 @@
+<h4>Mis tareas</h4>
+
+{% if not tasks %}
+<blockquote>No tienes asignada ninguna tarea.</blockquote>
+{% endif %}
+
+<div class="row">
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>Curso</th>
+                <th>Tarea</th>
+                <th>Descripción</th>
+                <th>Fecha de entrega</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.course }}</td>
+                <td>{{ task.name }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.due_date }}</td>
+                <td>
+                    {% if task.need_response %}
+                    <a class="modal-trigger" href="#" onclick="open_response_modal({{ forloop.counter0 }})">
+                        Enviar respuesta
+                    </a>
+                    {% else %}
+                    <p>No hay acciones disponibles</p>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="response-modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <h4>Envío de respuesta</h4>
+        </div>
+        <div class="row"><p id="form-task-name"></p></div>
+        <div class="row"><p id="form-task-description" class="caption"></p></div>
+        <div class="row">
+            <form id="response-form" class="col s12" action="{% url 'task.student.response' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" id="task-id" name="task_id">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="response-response" name="response" class="materialize-textarea"></textarea>
+                        <label for="response-response">Respuesta</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" name="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" stye="float:right">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            <a href="#!" class=" modal-action waves-effect waves-green btn-flat" onclick="send_form()">Enviar <i class="material-icons right">send</i></a>
+    </div>
+</div>
+
+
+{% block scripts %}
+<script type="text/javascript">
+    var tasks = [];
+    {% for task in tasks %}
+    tasks.push({
+        "id": {{ task.id }},
+        "name": "{{ task.name }}",
+        "description": "{{ task.description }}",
+        "course": "{{ task.course }}",
+        "response": "{{ task.response }}"
+    });
+    {% endfor %}
+</script>
+<script type="text/javascript">
+    function open_response_modal(index) {
+        var task = tasks[index];
+        $('#form-task-name').html(`${task.course} - ${task.name}`);
+        $('#form-task-description').html(task.description);
+        $('#task-id').attr('value', task.id);
+        $('#response-response').html(task.response);
+        $('#response-modal').openModal();
+    };
+</script>
+<script type="text/javascript">
+    function send_form() {
+        $('#response-form').submit();
+    };
+</script>
+{% endblock %}

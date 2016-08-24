@@ -6,7 +6,7 @@ from django.views.generic import View
 from django.utils.decorators import method_decorator
 
 from TCA.administration.utils import get_user_type
-from TCA.administration.models import Course, Teacher
+from TCA.administration.models import Course, Teacher, Student
 from TCA.attendance.models import Attendance
 from TCA.tasks.models import Task
 
@@ -39,6 +39,8 @@ class Dashboard(View):
             return TeacherDashboard().get(request)
         elif user == 'admin':
             return AdminDashboard().get(request)
+        elif user == 'student':
+            return StudentDashboard().get(request)
         else:
             return UserDashboard().get(request)
 
@@ -71,6 +73,24 @@ class TeacherDashboard(UserDashboard):
 
     def _get_teacher_courses(self, user_object):
         return user_object.courses.all()
+
+
+class StudentDashboard(UserDashboard):
+    """Show student's assignated tasks."""
+
+    user_type = 'student'
+
+    def _get_custom_context(self, request):
+        user_object = Student.objects.get(user=request.user)
+        return {
+            'tasks': self._get_student_tasks(user_object)
+        }
+
+    def _get_student_tasks(self, user):
+        return Task.objects.filter(
+            course__grade=user.grade,
+            due_date__gte=datetime.today().date()
+        )
 
 
 class AdminDashboard(UserDashboard):

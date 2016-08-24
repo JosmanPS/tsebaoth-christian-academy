@@ -99,3 +99,31 @@ class ResponseTeacherView(View):
         if user_type is not 'teacher':
             raise Http404('You are not authorized to this page.')
         return True
+
+
+class StudentResponse(View):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        """Ask for login."""
+        return super(StudentResponse, self).dispatch(*args, **kwargs)
+
+    def post(self, request):
+        self._validate_student_user(request)
+        task_id = request.POST.get('task_id')
+        task = get_object_or_404(Task, id=task_id)
+        response = get_object_or_404(Response, task=task,
+                                     student__user=request.user)
+        response.response = request.POST.get('response', '')
+        response.file = request.FILES.get('file', None)
+        print request.POST
+        print request.FILES
+        response.save()
+        return redirect(reverse('dashboards.main'))
+
+    def _validate_student_user(self, request):
+        """Only teachers can access this views."""
+        user_type = get_user_type(request.user)
+        if user_type is not 'student':
+            raise Http404('You are not authorized to this page.')
+        return True

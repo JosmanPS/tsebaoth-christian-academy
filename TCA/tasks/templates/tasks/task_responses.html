@@ -86,7 +86,7 @@
     var responses = [];
     {% for response in responses %}
         var data = {
-            'text': '{{ response.response }}',
+            'text': `{{ response.response }}`,
             'file': '{% if response.file %}{{ response.file.url }}{% endif %}'
         };
         responses.push(data);
