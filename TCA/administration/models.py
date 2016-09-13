@@ -86,11 +86,15 @@ class Teacher(TimeStamped):
         db_index=True
     )
     email = models.EmailField(
-        verbose_name='Correo electrónico'
+        verbose_name='Correo electrónico',
+        blank=True,
+        null=True
     )
     phone_number = models.CharField(
         max_length=15,
-        verbose_name='Número telefónico'
+        verbose_name='Número telefónico',
+        blank=True,
+        null=True
     )
     identity = models.CharField(
         max_length=60,
@@ -168,7 +172,9 @@ class Student(TimeStamped):
         db_index=True
     )
     born_date = models.DateField(
-        verbose_name='Fecha de nacimiento'
+        verbose_name='Fecha de nacimiento',
+        blank=True,
+        null=True
     )
     born_city = models.CharField(
         max_length=60,
@@ -183,7 +189,9 @@ class Student(TimeStamped):
     )
     phone_number = models.CharField(
         max_length=15,
-        verbose_name='Número telefónico'
+        verbose_name='Número telefónico',
+        blank=True,
+        null=True
     )
     blood_type = models.CharField(
         max_length=4,
@@ -251,19 +259,26 @@ class Father(TimeStamped):
         db_index=True
     )
     born_date = models.DateField(
-        verbose_name='Fecha de nacimiento'
+        verbose_name='Fecha de nacimiento',
+        blank=True,
+        null=True
     )
     marital_status = models.CharField(
         verbose_name='Estado civil',
         max_length=15,
-        choices=MARITAL_STATUS_CHOICES
+        choices=MARITAL_STATUS_CHOICES,
+        default='married'
     )
     email = models.EmailField(
-        verbose_name='Correo electrónico'
+        verbose_name='Correo electrónico',
+        blank=True,
+        null=True
     )
     phone_number = models.CharField(
         max_length=15,
-        verbose_name='Número telefónico'
+        verbose_name='Número telefónico',
+        blank=True,
+        null=True
     )
     proffession = models.CharField(
         max_length=60,
@@ -282,7 +297,8 @@ class Father(TimeStamped):
     )
     employee_type = models.CharField(
         max_length=60,
-        choices=EMPLOYEE_TYPE_CHOICES
+        choices=EMPLOYEE_TYPE_CHOICES,
+        default='permanent'
     )
     responsible_for_student = models.BooleanField(
         verbose_name='Está encargado de sus hijos',
