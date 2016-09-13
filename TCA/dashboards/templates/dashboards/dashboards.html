@@ -11,6 +11,8 @@
     {% include 'dashboards/_includes/teacher_dashboard.html' %}
   {% elif user_type == 'student' %}
     {% include 'dashboards/_includes/student_dashboard.html' %}
+  {% elif user_type == 'father' %}
+    {% include 'dashboards/_includes/father_dashboard.html' %}
   {% else %}
     <h4>{{ user_type }}</h4>
   {% endif %}

@@ -6,7 +6,7 @@ from django.views.generic import View
 from django.utils.decorators import method_decorator
 
 from TCA.administration.utils import get_user_type
-from TCA.administration.models import Course, Teacher, Student
+from TCA.administration.models import Course, Teacher, Student, Father
 from TCA.attendance.models import Attendance
 from TCA.tasks.models import Task
 
@@ -41,6 +41,8 @@ class Dashboard(View):
             return AdminDashboard().get(request)
         elif user == 'student':
             return StudentDashboard().get(request)
+        elif user == 'father':
+            return FatherDashboard().get(request)
         else:
             return UserDashboard().get(request)
 
@@ -58,6 +60,19 @@ class UserDashboard(View):
 
     def _get_custom_context(self, request):
         return {}
+
+
+class FatherDashboard(UserDashboard):
+    """Show a father's sons dashboard."""
+
+    user_type = 'father'
+
+    def _get_custom_context(self, request):
+        user_object = Father.objects.get(user=request.user)
+        sons = user_object.sons.all()
+        return {
+            'sons': sons,
+        }
 
 
 class TeacherDashboard(UserDashboard):

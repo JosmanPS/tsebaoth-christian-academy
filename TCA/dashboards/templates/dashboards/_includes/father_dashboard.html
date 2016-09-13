@@ -1,0 +1,35 @@
+{% for student in sons %}
+    <h4>Resumen de su hijo {{ student.name }} {{ student.last_name }}</h4>
+    <img src="http://www.brentfordfc.co.uk/images/common/bg_player_profile_default_big.png" style="width: 100px">
+    <br>
+    <h5>Asistencia de Agosto</h5>
+    <p class="caption">Total: 87%</p>
+    <h5>Faltas</h5>
+    <ul>
+        <li>Lunes 8 de Agosto</li>
+        <li>Miércoles 17 de Agosto</li>
+        <li>Jueves 25 de Agosto</li>
+    </ul>
+    <br>
+    <h5>Tareas</h5>
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>Entregada</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Fecha de entrega</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task in student.tasks %}
+            <tr>
+                <td><i class="material-icons">done</i></td>
+                <td>{{ task.name }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.due_date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
