@@ -64,6 +64,13 @@ class Course(TimeStamped):
 
 
 class Teacher(TimeStamped):
+
+    ACADEMIC_GRADE_CHOICES = (
+        ('profesionalizandose', 'Profesionalizándose'),
+        ('licenciatura', 'Licenciatura'),
+        ('maestria', 'Maestría'),
+    )
+
     user = models.OneToOneField(
         User,
         verbose_name='Usuario',
@@ -77,6 +84,42 @@ class Teacher(TimeStamped):
         max_length=120,
         verbose_name='Apellidos',
         db_index=True
+    )
+    email = models.EmailField(
+        verbose_name='Correo electrónico'
+    )
+    phone_number = models.CharField(
+        max_length=15,
+        verbose_name='Número telefónico'
+    )
+    identity = models.CharField(
+        max_length=60,
+        verbose_name='Identidad',
+        db_index=True
+    )
+    inprema = models.CharField(
+        max_length=60,
+        verbose_name='INPREMA',
+        db_index=True
+    )
+    escalafon = models.CharField(
+        max_length=60,
+        verbose_name='ESCALAFON',
+        db_index=True
+    )
+    college = models.CharField(
+        max_length=60,
+        verbose_name='Colegiación',
+    )
+    grade = models.CharField(
+        max_length=60,
+        verbose_name='Grado',
+        db_index=True
+    )
+    academic_grade = models.CharField(
+        max_length=60,
+        verbose_name='Formación académica',
+        choices=ACADEMIC_GRADE_CHOICES
     )
     courses = models.ManyToManyField(
         Course,
@@ -119,6 +162,52 @@ class Student(TimeStamped):
         Grade,
         verbose_name='Grado escolar'
     )
+    identity = models.CharField(
+        max_length=60,
+        verbose_name='Identidad',
+        db_index=True
+    )
+    born_date = models.DateField(
+        verbose_name='Fecha de nacimiento'
+    )
+    born_city = models.CharField(
+        max_length=60,
+        verbose_name='Ciudad de nacimiento'
+    )
+    born_country = models.CharField(
+        max_length=60,
+        verbose_name='País de nacimiento'
+    )
+    address = models.TextField(
+        verbose_name='Dirección'
+    )
+    phone_number = models.CharField(
+        max_length=15,
+        verbose_name='Número telefónico'
+    )
+    blood_type = models.CharField(
+        max_length=4,
+        verbose_name='Tipo de sangre'
+    )
+    alergies_illnesses = models.TextField(
+        verbose_name='Alergias o enfermedades'
+    )
+    medicines = models.TextField(
+        verbose_name='Medicinas que toma'
+    )
+    food_alergies = models.TextField(
+        verbose_name='Alérgico a alimentos'
+    )
+    medicine_alergies = models.TextField(
+        verbose_name='Alérgico a medicinas'
+    )
+
+    @property
+    def tasks(self):
+        from TCA.tasks.models import Task
+        return Task.objects.filter(
+            course__grade=self.grade
+        )
 
     def __unicode__(self):
         return '%s - %s %s' % (
@@ -134,6 +223,19 @@ class Student(TimeStamped):
 
 
 class Father(TimeStamped):
+
+    MARITAL_STATUS_CHOICES = (
+        ('single', 'Soltero'),
+        ('married', 'Casado'),
+        ('divorced', 'Divorciado'),
+        ('widowed', 'Viudo')
+    )
+    EMPLOYEE_TYPE_CHOICES = (
+        ('permanent', 'Empleado permanente'),
+        ('contractor', 'Por contrato'),
+        ('both', 'Ambas')
+    )
+
     user = models.OneToOneField(
         User,
         verbose_name='Usuario',
@@ -147,6 +249,48 @@ class Father(TimeStamped):
         max_length=120,
         verbose_name='Apellidos',
         db_index=True
+    )
+    born_date = models.DateField(
+        verbose_name='Fecha de nacimiento'
+    )
+    marital_status = models.CharField(
+        verbose_name='Estado civil',
+        max_length=15,
+        choices=MARITAL_STATUS_CHOICES
+    )
+    email = models.EmailField(
+        verbose_name='Correo electrónico'
+    )
+    phone_number = models.CharField(
+        max_length=15,
+        verbose_name='Número telefónico'
+    )
+    proffession = models.CharField(
+        max_length=60,
+        verbose_name='Profesión u oficio'
+    )
+    have_job = models.BooleanField(
+        verbose_name='Labora actualmente',
+        default=True
+    )
+    work_address = models.TextField(
+        verbose_name='Dirección de trabajo'
+    )
+    work_charge = models.CharField(
+        verbose_name='Cargo que desempeña',
+        max_length=60
+    )
+    employee_type = models.CharField(
+        max_length=60,
+        choices=EMPLOYEE_TYPE_CHOICES
+    )
+    responsible_for_student = models.BooleanField(
+        verbose_name='Está encargado de sus hijos',
+        default=False
+    )
+    responsible_for_payment = models.BooleanField(
+        verbose_name='Está encargado del pago de colegiatura',
+        default=False
     )
     sons = models.ManyToManyField(
         Student,
