@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'easy_thumbnails',
+    'filer',
+    'mptt',
+
     'TCA.administration',
     'TCA.login',
     'TCA.dashboards',

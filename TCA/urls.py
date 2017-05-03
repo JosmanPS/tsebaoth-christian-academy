@@ -25,6 +25,9 @@ urlpatterns = [
     url(r'^$', index),
 
     url(r'^admin/', admin.site.urls),
+
+    url(r'^filer/', include('filer.urls')),
+
     url(r'^accounts/', include('TCA.login.urls')),
     url(r'^dashboards/', include('TCA.dashboards.urls')),
     url(r'^tasks/', include('TCA.tasks.urls')),
