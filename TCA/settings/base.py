@@ -92,10 +92,9 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/tsebaoth-academy:tca-database',
+            'HOST': '/cloudsql/tsebaoth-academy:us-central1:tca-db',
             'NAME': 'tca',
-            'USER': 'tca',
-            'PASSWORD': 'tca_password'
+            'USER': 'root'
         }
     }
 else:
