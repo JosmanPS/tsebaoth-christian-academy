@@ -21,9 +21,9 @@ class PostAdmin(AbstractPostAdmin):
 admin.site.register(Post, PostAdmin)
 
 
-@admin.register(SimplePost)
-class SimplePostAdmin(admin.ModelAdmin):
-    list_display = ('post',)
+# @admin.register(SimplePost)
+# class SimplePostAdmin(admin.ModelAdmin):
+#     list_display = ('post',)
 
 
 @admin.register(ImagePost)

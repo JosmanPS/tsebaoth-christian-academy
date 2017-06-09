@@ -8,6 +8,7 @@ from django.db import models
 
 from TCA.administration.models import Course
 from TCA.utils.models.mixins import TimeStamped
+from TCA.utils.models.shortcuts import get_object_or_none
 
 
 class AbstractPost(TimeStamped):
@@ -57,7 +58,28 @@ class TCAPostMixin(models.Model):
 
 
 class Post(AbstractPost, SlugPostMixin, TCAPostMixin):
-    pass
+    """Post principal."""
+
+    @property
+    def image(self):
+        image = get_object_or_none(ImagePost, post=self)
+        if image is None:
+            return image
+        return image.image.url
+
+    @property
+    def file(self):
+        file = get_object_or_none(FilePost, post=self)
+        if file is None:
+            return file
+        return file.file
+
+    @property
+    def pdf(self):
+        pdf = get_object_or_none(PDFPost, post=self)
+        if pdf is None:
+            return pdf
+        return pdf.pdf
 
 
 class PostContentAbstract(TimeStamped):

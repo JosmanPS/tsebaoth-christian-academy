@@ -12,6 +12,7 @@ from TCA.administration.utils import get_user_type
 from TCA.administration.models import Course, Teacher, Student, Father
 from TCA.attendance.models import Attendance
 from TCA.tasks.models import Task
+from TCA.posts.models import Post
 
 
 #
@@ -149,6 +150,9 @@ class CourseView(View):
         if attendance:
             attendance = attendance[0]
         context['attendance'] = attendance
+        context['posts'] = Post.objects.filter(
+            course=course
+        )
         return render(request, 'dashboards/course.html', context)
 
     def _get_course_tasks(self, course):
