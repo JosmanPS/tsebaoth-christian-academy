@@ -83,7 +83,7 @@ class Post(AbstractPost, SlugPostMixin, TCAPostMixin):
 
 
 class PostContentAbstract(TimeStamped):
-    post = models.ForeignKey(
+    post = models.OneToOneField(
         Post,
         verbose_name='Post'
     )
