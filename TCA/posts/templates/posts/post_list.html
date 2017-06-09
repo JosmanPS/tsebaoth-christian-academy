@@ -1,0 +1,12 @@
+{% extends '_layouts/base_with_menu.html' %}
+
+{% block content %}
+<div class="container">
+    {% for post in post_list %}
+    <div>
+        <a href="{% url 'posts:detail' post.id %}"><h1>{{post.headline}}</h1></a>
+        {{post.text|urlize|linebreaks}}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

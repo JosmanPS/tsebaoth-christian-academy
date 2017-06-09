@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+
 from datetime import datetime
 
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
@@ -132,6 +135,10 @@ class CourseView(View):
 
     def get(self, request, course_key):
         """Send a `Course` object."""
+        user = request.user
+        user_type = get_user_type(user)
+        if not (user_type == 'teacher' or user.is_staff):
+            raise Http404('No está autorizado para ver está página.')
         course = get_object_or_404(Course, key=course_key)
         context = {'course': course}
         context['tasks'] = self._get_course_tasks(course)

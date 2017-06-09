@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^dashboards/', include('TCA.dashboards.urls')),
     url(r'^tasks/', include('TCA.tasks.urls')),
     url(r'^attendance/', include('TCA.attendance.urls')),
+    url(r'^posts/', include('TCA.posts.urls', namespace='posts')),
 
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT})
 ]
