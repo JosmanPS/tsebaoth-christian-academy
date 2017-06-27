@@ -90,6 +90,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'TCA.wsgi.application'
 
 
+# Storage
+GS_BUCKET_NAME = 'tca-files'
+
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
@@ -102,6 +105,7 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
             'USER': 'root'
         }
     }
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 else:
     DATABASES = {
         'default': {
