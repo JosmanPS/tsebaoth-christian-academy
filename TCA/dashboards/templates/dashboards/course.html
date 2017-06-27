@@ -63,12 +63,13 @@
     <div class="row">
         <h2 class="header">Mis posts</h2>
     </div>
-    {% for post in posts %}
+    {% if posts %}
     <div class="row">
         <table class="striped">
             <thead>
                 <tr>
                     <th>Título</th>
+                    <th>Autor</th>
                     <th>Texto</th>
                     <th>Fecha</th>
                     <th>Acciones</th>
@@ -78,10 +79,11 @@
                 {% for post in posts %}
                 <tr>
                     <td><a href="{% url 'posts:detail' post.id %}">{{ post.headline }}</a></td>
+                    <td>{{ post.author.username }}</td>
                     <td>{{ post.text|truncatechars:50 }}</td>
                     <td>{{ post.created_at }}</td>
                     <td>
-                        <a href="#" class="btn-floating waves-effect waves-light blue"><i class="material-icons">mode_edit</i></a>
+                        <a href="{% url 'posts:form.modify' course.key post.id %}" class="btn-floating waves-effect waves-light blue"><i class="material-icons">mode_edit</i></a>
                         <a href="#" onclick="delete_post({{ post.id }});" class="btn-floating waves-effect waves-light red"><i class="material-icons">delete</i></a>
                     </td>
                 </tr>
@@ -89,7 +91,15 @@
             </tbody>
         </table>
     </div>
-    {% endfor %}
+    {% else %}
+    <div class="row">
+    <blockquote>No tienes ningún post en este curso.</blockquote>
+    </div>
+    {% endif %}
+    <div class="row" style="float:right">
+        <a href="{% url 'posts:form' course.key %}" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+    </div>
+    <br><br><br><br><br>
 </div>
 {% endblock %}
 
@@ -124,5 +134,18 @@ Toda la información relacionada se perderá tras esta acción.
             });
         }
     };
+
+    function delete_post(id) {
+        var delete_confirmation = confirm(`
+¿Estás seguro de eliminar el post?
+Toda la información relacionada se perderá tras esta acción.
+        `);
+        if (delete_confirmation == true) {
+            $.post(`/posts/delete/Post/${id}/`, {'csrfmiddlewaretoken': csrftoken}, function() {
+                location.reload();
+            });
+        }
+    };
+
 </script>
 {% endblock %}

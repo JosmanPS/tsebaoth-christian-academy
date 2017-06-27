@@ -65,21 +65,21 @@ class Post(AbstractPost, SlugPostMixin, TCAPostMixin):
         image = get_object_or_none(ImagePost, post=self)
         if image is None:
             return image
-        return image.image.url
+        return image
 
     @property
     def file(self):
         file = get_object_or_none(FilePost, post=self)
         if file is None:
             return file
-        return file.file
+        return file
 
     @property
     def pdf(self):
         pdf = get_object_or_none(PDFPost, post=self)
         if pdf is None:
             return pdf
-        return pdf.pdf
+        return pdf
 
 
 class PostContentAbstract(TimeStamped):
