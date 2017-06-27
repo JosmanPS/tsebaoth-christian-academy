@@ -39,6 +39,7 @@ libraries:
 
 skip_files:
 - lib/PIL*
+- lib/MySQLdb*
 - devops/media*
 
 # [END django_app]
