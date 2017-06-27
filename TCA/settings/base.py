@@ -25,7 +25,7 @@ SECRET_KEY = 'w5(saqi*9zuowapq7-h5+crqv-w*r=u*t#_8=vhs_z7gocc3u2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tca-platfotm.appspot.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
