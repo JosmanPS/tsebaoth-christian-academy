@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'filer',
     'mptt',
-    'storages',
 
     'TCA.administration',
     'TCA.login',
@@ -106,7 +105,7 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
             'USER': 'root'
         }
     }
-    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    DEFAULT_FILE_STORAGE = 'storage.GoogleCloudStorage'
 else:
     DATABASES = {
         'default': {
