@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'filer',
     'mptt',
+    'storages',
 
     'TCA.administration',
     'TCA.login',
