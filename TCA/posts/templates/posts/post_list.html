@@ -4,9 +4,11 @@
 <div class="container">
     {% for post in post_list %}
     <div>
-        <a href="{% url 'posts:detail' post.id %}"><h1>{{post.headline}}</h1></a>
-        {{post.text|urlize|linebreaks}}
+        {% include 'posts/_includes/post.html' with post=post %}
     </div>
+    <br><br>
+    <div class="divider"></div>
+    <br>
     {% endfor %}
 </div>
 {% endblock %}

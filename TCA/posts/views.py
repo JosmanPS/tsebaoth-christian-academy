@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView, View
 
 from TCA.administration.utils import get_user_type
-from TCA.administration.models import Course
+from TCA.administration.models import Course, Teacher, Father, Student
 from TCA.utils.models.shortcuts import get_object_or_none
 
 from TCA.posts.models import Post, ImagePost, PDFPost, FilePost
@@ -22,6 +22,30 @@ class PostListView(ListView):
 
 class PostDetailView(DetailView):
     model = Post
+
+
+def allowed_posts(request):
+    """Return a list of the allowed streams a user can see."""
+    user = request.user
+    user_type = get_user_type(user)
+    if user_type in ['teacher', 'admin']:
+        posts = Post.objects.all()
+    elif user_type == 'teacher':
+        teacher = Teacher.objects.get(user=user)
+        courses = [course.id for course in teacher.courses.all()]
+        posts = Post.objects.filter(course__id__in=courses)
+    elif user_type == 'father':
+        father = Father.objects.get(user=user)
+        sons = father.sons.all()
+        grades = [s.grade.id for s in sons]
+        posts = Post.objects.filter(course__grade__id__in=grades)
+    elif user_type == 'student':
+        student = Student.objects.get(user=user)
+        posts = Post.objects.filter(course__grade=student.grade)
+    else:
+        raise Http404('No está autorizado para ver está página.')
+    context = {'post_list': posts}
+    return render(request, 'posts/post_list.html', context)
 
 
 class PostView(View):
