@@ -99,31 +99,43 @@ class Teacher(TimeStamped):
     identity = models.CharField(
         max_length=60,
         verbose_name='Identidad',
-        db_index=True
+        db_index=True,
+        blank=True,
+        null=True
     )
     inprema = models.CharField(
         max_length=60,
         verbose_name='INPREMA',
-        db_index=True
+        db_index=True,
+        blank=True,
+        null=True
     )
     escalafon = models.CharField(
         max_length=60,
         verbose_name='ESCALAFON',
-        db_index=True
+        db_index=True,
+        blank=True,
+        null=True
     )
     college = models.CharField(
         max_length=60,
         verbose_name='Colegiación',
+        blank=True,
+        null=True
     )
     grade = models.CharField(
         max_length=60,
         verbose_name='Grado',
-        db_index=True
+        db_index=True,
+        blank=True,
+        null=True
     )
     academic_grade = models.CharField(
         max_length=60,
         verbose_name='Formación académica',
-        choices=ACADEMIC_GRADE_CHOICES
+        choices=ACADEMIC_GRADE_CHOICES,
+        blank=True,
+        null=True
     )
     courses = models.ManyToManyField(
         Course,
@@ -160,7 +172,9 @@ class Student(TimeStamped):
     school_id = models.CharField(
         max_length=20,
         verbose_name='Matrícula',
-        unique=True
+        unique=True,
+        blank=True,
+        null=True
     )
     grade = models.ForeignKey(
         Grade,
@@ -169,7 +183,9 @@ class Student(TimeStamped):
     identity = models.CharField(
         max_length=60,
         verbose_name='Identidad',
-        db_index=True
+        db_index=True,
+        blank=True,
+        null=True
     )
     born_date = models.DateField(
         verbose_name='Fecha de nacimiento',
@@ -178,14 +194,20 @@ class Student(TimeStamped):
     )
     born_city = models.CharField(
         max_length=60,
-        verbose_name='Ciudad de nacimiento'
+        verbose_name='Ciudad de nacimiento',
+        blank=True,
+        null=True
     )
     born_country = models.CharField(
         max_length=60,
-        verbose_name='País de nacimiento'
+        verbose_name='País de nacimiento',
+        blank=True,
+        null=True
     )
     address = models.TextField(
-        verbose_name='Dirección'
+        verbose_name='Dirección',
+        blank=True,
+        null=True
     )
     phone_number = models.CharField(
         max_length=15,
@@ -195,19 +217,29 @@ class Student(TimeStamped):
     )
     blood_type = models.CharField(
         max_length=4,
-        verbose_name='Tipo de sangre'
+        verbose_name='Tipo de sangre',
+        blank=True,
+        null=True
     )
     alergies_illnesses = models.TextField(
-        verbose_name='Alergias o enfermedades'
+        verbose_name='Alergias o enfermedades',
+        blank=True,
+        null=True
     )
     medicines = models.TextField(
-        verbose_name='Medicinas que toma'
+        verbose_name='Medicinas que toma',
+        blank=True,
+        null=True
     )
     food_alergies = models.TextField(
-        verbose_name='Alérgico a alimentos'
+        verbose_name='Alérgico a alimentos',
+        blank=True,
+        null=True
     )
     medicine_alergies = models.TextField(
-        verbose_name='Alérgico a medicinas'
+        verbose_name='Alérgico a medicinas',
+        blank=True,
+        null=True
     )
 
     @property
@@ -267,7 +299,9 @@ class Father(TimeStamped):
         verbose_name='Estado civil',
         max_length=15,
         choices=MARITAL_STATUS_CHOICES,
-        default='married'
+        default='married',
+        blank=True,
+        null=True
     )
     email = models.EmailField(
         verbose_name='Correo electrónico',
@@ -282,18 +316,24 @@ class Father(TimeStamped):
     )
     proffession = models.CharField(
         max_length=60,
-        verbose_name='Profesión u oficio'
+        verbose_name='Profesión u oficio',
+        blank=True,
+        null=True
     )
     have_job = models.BooleanField(
         verbose_name='Labora actualmente',
         default=True
     )
     work_address = models.TextField(
-        verbose_name='Dirección de trabajo'
+        verbose_name='Dirección de trabajo',
+        blank=True,
+        null=True
     )
     work_charge = models.CharField(
         verbose_name='Cargo que desempeña',
-        max_length=60
+        max_length=60,
+        blank=True,
+        null=True
     )
     employee_type = models.CharField(
         max_length=60,
