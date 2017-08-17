@@ -1,0 +1,30 @@
+{% extends '_layouts/base_with_menu.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h2 class="header">Streams permitidos</h2>
+    </div>
+    <div class="divider"></div>
+    <div class="row" id="streams">
+    <div class="row">
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <th>Grado</th>
+                    <th>URL</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for stream in streams %}
+                <tr>
+                    <td>{{ stream.grade }}</td>
+                    <td><a href="{% url 'stream' stream.id %}">{{ stream.url }}</a></td>
+                </tr>    
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
