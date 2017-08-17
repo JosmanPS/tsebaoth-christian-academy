@@ -2,6 +2,7 @@
 
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 from TCA.administration.models import Father
 from TCA.administration.utils import get_user_type
@@ -9,6 +10,7 @@ from TCA.administration.utils import get_user_type
 from .models import Stream
 
 
+@login_required
 def stream(request, grade_id):
     user = request.user
     user_type = get_user_type(user)
@@ -26,6 +28,7 @@ def stream(request, grade_id):
     return render(request, 'stream/stream.html', context)
 
 
+@login_required
 def allowed_streams(request):
     """Return a list of the allowed streams a user can see."""
     user = request.user

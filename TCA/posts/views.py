@@ -24,6 +24,7 @@ class PostDetailView(DetailView):
     model = Post
 
 
+@login_required
 def allowed_posts(request):
     """Return a list of the allowed streams a user can see."""
     user = request.user
