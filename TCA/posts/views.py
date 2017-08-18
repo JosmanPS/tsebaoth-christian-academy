@@ -25,7 +25,7 @@ class PostDetailView(DetailView):
 
 
 @login_required
-def allowed_posts(request):
+def allowed_posts(request, grade_id=None):
     """Return a list of the allowed streams a user can see."""
     user = request.user
     user_type = get_user_type(user)
@@ -39,6 +39,11 @@ def allowed_posts(request):
         father = Father.objects.get(user=user)
         sons = father.sons.all()
         grades = [s.grade.id for s in sons]
+        int_grades = [int(grade) for grade in grades]
+        if grade_id is not None and int(grade_id) in int_grades:
+            grades = [grade_id]
+        else:
+            grades = []
         posts = Post.objects.filter(course__grade__id__in=grades)
     elif user_type == 'student':
         student = Student.objects.get(user=user)

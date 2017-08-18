@@ -1,35 +1,43 @@
 {% for student in sons %}
-    <h4>Resumen de su hijo {{ student.name }} {{ student.last_name }}</h4>
-    <img src="http://www.brentfordfc.co.uk/images/common/bg_player_profile_default_big.png" style="width: 100px">
-    <br>
-    <h5>Asistencia de Agosto</h5>
-    <p class="caption">Total: 87%</p>
-    <h5>Faltas</h5>
-    <ul>
-        <li>Lunes 8 de Agosto</li>
-        <li>Miércoles 17 de Agosto</li>
-        <li>Jueves 25 de Agosto</li>
-    </ul>
-    <br>
-    <h5>Tareas</h5>
-    <table class="highlight">
-        <thead>
-            <tr>
-                <th>Entregada</th>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Fecha de entrega</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for task in student.tasks %}
-            <tr>
-                <td><i class="material-icons">done</i></td>
-                <td>{{ task.name }}</td>
-                <td>{{ task.description }}</td>
-                <td>{{ task.due_date }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="row">
+    <div class="col s12">
+        <h4>Resumen de su hijo {{ student.name }} {{ student.last_name }}</h4>
+        <br>
+        <table class="striped">
+            <tbody>
+                <tr>
+                    <td><strong>Matrícula</strong></td>
+                    <td>{{ student.school_id }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Grado</strong></td>
+                    <td>{{ student.grade }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Promedio académico</strong></td>
+                    <td>%</td>
+                </tr>
+                <tr>
+                    <td><strong>Porcentaje de tareas entregadas</strong></td>
+                    <td>%</td>
+                </tr>
+                <tr>
+                    <td><strong>Asistencia</strong></td>
+                    <td>%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col s6" style="text-align:center;">
+        <a href="{% url 'posts:list.grade' student.grade.id %}">Ver noticias de {{ student.grade }} grado.</a>
+    </div>
+    <div class="col s6" style="text-align:center;">
+        <a href="{% url 'stream' student.grade.id %}">Ver stream de {{ student.grade }} grado.</a>
+    </div>
+</div>
+<br>
+<div class="divider"></div>
+<br>
 {% endfor %}

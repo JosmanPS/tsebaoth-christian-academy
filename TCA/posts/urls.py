@@ -8,6 +8,7 @@ urlpatterns = []
 
 urlpatterns = [
     url(r'^$', allowed_posts, name='list'),
+    url(r'^grade/(?P<grade_id>[\d]+)/$', allowed_posts, name='list.grade'),
     url(r'^(?P<pk>[\d]+)/$', PostDetailView.as_view(), name='detail'),
     url(r'^(?P<slug>[-\w]+)/$',
         PostDetailView.as_view(), name='detail-by-slug'),
