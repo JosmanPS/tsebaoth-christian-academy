@@ -257,6 +257,15 @@ class Student(TimeStamped):
             course__grade=self.grade
         )
 
+    def get_tasks(self, n):
+        """Return the last n tasks."""
+        tasks = self.tasks
+        return tasks[:n]
+
+    def get_10_tasks(self):
+        """Return the last 10 tasks."""
+        return self.get_tasks(10)
+
     @property
     def parents(self):
         return Father.objects.filter(sons__id=self.id).values()

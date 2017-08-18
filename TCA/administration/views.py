@@ -5,7 +5,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from google.appengine.api import mail
+from google.appengine.api import app_identity, mail
 
 from .models import Teacher, Course
 
@@ -24,7 +24,9 @@ def teacher_send_mail(request):
     # body = reques.POST['body']
     body = 'Probando mail de TCA.'
     mail.send_mail(
-        sender='tca-platfotm@appspot.gserviceaccount.com',
+        sender='{}@appspot.gserviceaccount.com'.format(
+            app_identity.get_application_id()
+        ),
         to=mails,
         subject=subject,
         body=("""
