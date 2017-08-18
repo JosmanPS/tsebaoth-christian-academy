@@ -148,6 +148,14 @@ class Teacher(TimeStamped):
             self.name
         )
 
+    def get_parents(self, course_id):
+        """Return a list of the parents from a course."""
+        grade = Course.objects.get(id=course_id).grade
+        students = Student.objects.filter(grade=grade)
+        parents = [student.parents for student in students]
+        parents = [parent for subset in parents for parent in subset]
+        return parents
+
     class Meta:
         verbose_name = 'Profesor'
         verbose_name_plural = 'Profesores'
@@ -248,6 +256,10 @@ class Student(TimeStamped):
         return Task.objects.filter(
             course__grade=self.grade
         )
+
+    @property
+    def parents(self):
+        return Father.objects.filter(sons__id=self.id).values()
 
     def __unicode__(self):
         return '%s - %s %s' % (

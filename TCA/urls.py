@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^filer/', include('filer.urls')),
 
     url(r'^accounts/', include('TCA.login.urls')),
+    url(r'^administration/', include('TCA.administration.urls')),
     url(r'^dashboards/', include('TCA.dashboards.urls')),
     url(r'^tasks/', include('TCA.tasks.urls')),
     url(r'^attendance/', include('TCA.attendance.urls')),
