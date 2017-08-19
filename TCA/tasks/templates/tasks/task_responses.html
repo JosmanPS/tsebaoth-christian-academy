@@ -6,9 +6,37 @@
     <div class="row">
         <h1 class="header">{{ course.key }} - {{ task.name }}</h1>
     </div>
-    <div class="row">
-        <p>{{ task.description }}</p>
+    {% if task.image %}
+    <div id="image" class="row">
+        <img class="responsive-img" style="width: 400px;" src="{{ task.image.url }}"/>
     </div>
+    {% endif %}
+    <div class="row flow-text">
+        <p>{{ task.description|urlize|linebreaks }}</p>
+    </div>
+    {% if task.pdf %}
+    <div class="row">
+        <div class="video-container">
+            <iframe width="853" height="480" src="{{ task.pdf.url }}" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+    {% endif %}
+    {% if task.file %}
+    <div id="file" class="row">
+        <div class="col s12 m6">
+            <div class="card orange lighten-5">
+                <div class="card-content">
+                    <span class="card-title"><i class="medium material-icons">description</i> {{task.file.name}}</span>
+                    <p>Esta publicación contiene un archivo adjunto.</p>
+                </div>
+                <div class="card-action">
+                    <a href="{{ task.file.url }}" target="_blank">Descargar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="divider"></div>
     <div class="row">
         <h4>Respuestas y calificaciones</h4>

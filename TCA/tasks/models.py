@@ -8,6 +8,14 @@ from TCA.administration.models import Course, Student
 from TCA.utils.models.mixins import TimeStamped
 
 
+def get_file_path(instance, filename):
+    """File path for tasks objects."""
+    return 'tasks/%s/files/%s' % (
+        instance.name,
+        filename
+    )
+
+
 class Task(TimeStamped):
     name = models.CharField(
         max_length=60,
@@ -25,6 +33,30 @@ class Task(TimeStamped):
     )
     description = models.TextField(
         verbose_name='Descipción'
+    )
+    image = models.ImageField(
+        verbose_name='Imágen',
+        upload_to=get_file_path,
+        blank=True,
+        null=True
+    )
+    youtube = models.CharField(
+        max_length=1024,
+        verbose_name='YouTube',
+        blank=True,
+        null=True
+    )
+    pdf = models.FileField(
+        verbose_name='Archivo PDF',
+        upload_to=get_file_path,
+        blank=True,
+        null=True
+    )
+    file = models.FileField(
+        verbose_name='Archivo adjunto',
+        upload_to=get_file_path,
+        blank=True,
+        null=True
     )
     due_date = models.DateField(
         verbose_name='Fecha de entrega',

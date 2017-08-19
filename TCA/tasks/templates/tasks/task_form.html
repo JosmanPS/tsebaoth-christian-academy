@@ -6,7 +6,7 @@
         <h1 class="header">Crear tarea en {{ course.key }} - {{ course.name }}</h1>
     </div>
     <div class="row">
-        <form class="col s12" method="post" {% if task %}action="{% url 'tasks.form.modify' course.key task.id %}"{% else %}action="{% url 'tasks.form' course.key %}"{% endif %}>
+        <form class="col s12" method="post" {% if task %}action="{% url 'tasks.form.modify' course.key task.id %}"{% else %}action="{% url 'tasks.form' course.key %}"{% endif %} enctype="multipart/form-data">
             {% csrf_token %}
             {% if task %}
                 <input type="hidden" name="id" value="{{ task.id }}">
@@ -21,6 +21,48 @@
                 <div class="input-field col s12">
                     <textarea id="description" name="description" class="materialize-textarea">{% if task %}{{ task.description }}{% endif %}</textarea>
                     <label for="description">Descripción</label>
+                </div>
+            </div>
+            <div class="row">
+                {% if task.image %}<p><strong>Archivo actual:</strong> <a target="_blank" href="{{ task.image.url }}">{{ task.image.url }}</a><br><a href="#" onclick="delete_task_media('image', {{ task.id }});" class="red-text text-darken-4">X Eliminar</a></p>{% endif %}
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Imagen</span>
+                        <input type="file" id="image" name="image">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Inserta una imagen si deseas que se visualice en el post.">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="youtube" name="youtube" type="text" class="validate" {% if task %}value="{{ task.youtube }}"{% endif %} placeholder="Inserta el URL de un video si deseas que se visualice en el post.">
+                    <label for="youtube">YouTube URL</label>
+                </div>
+            </div>
+            <div class="row">
+                {% if task.pdf %}<p><strong>Archivo actual:</strong> <a target="_blank" href="{{ task.pdf.url }}">{{ task.pdf.url }}</a><br><a href="#" onclick="delete_task_media('pdf', {{ task.id }});" class="red-text text-darken-4">X Eliminar</a></p>{% endif %}
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Archivo PDF</span>
+                        <input type="file" id="pdf" name="pdf">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Inserta un archivo PDF si deseas que se visualice en el post.">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% if task.file %}<p><strong>Archivo actual:</strong> <a target="_blank" href="{{ task.file.url }}">{{ task.file.url }}</a><br><a href="#" onclick="delete_task_media('file', {{ task.id }});" class="red-text text-darken-4">X Eliminar</a></p>{% endif %}
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Archivo adjunto</span>
+                        <input type="file" id="file" name="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Inserta un archivo si deseas que se adjunte al post.">
+                    </div>
                 </div>
             </div>
             <div class="row">

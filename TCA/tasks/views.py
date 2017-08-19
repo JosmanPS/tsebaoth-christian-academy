@@ -44,13 +44,42 @@ class TaskView(View):
         task.slug = slugify(request.POST['name'])
         task.course = course
         task.description = request.POST['description']
+        task.youtube = request.POST.get('youtube', '')
         task.due_date = parse(request.POST['due_date'])
         task.value = request.POST['value']
         task.need_response = request.POST.get('need_response', False)
         task.save()
+        task = self._add_media_elements(task, request)
         if initialize:
             task.init_response_objects()
         return redirect(reverse('dashboards.course', args=[course_key]))
+
+    def _add_media_elements(self, task, request):
+        task = self._add_image(task, request)
+        task = self._add_file(task, request)
+        task = self._add_pdf(task, request)
+        return task
+
+    def _add_image(self, task, request):
+        image = request.FILES.get('image', None)
+        if image is None:
+            return task
+        task.image.save(image.name, image)
+        return task
+
+    def _add_file(self, task, request):
+        file = request.FILES.get('file', None)
+        if file is None:
+            return task
+        task.file.save(file.name, file)
+        return task
+
+    def _add_pdf(self, task, request):
+        pdf = request.FILES.get('pdf', None)
+        if pdf is None:
+            return task
+        task.pdf.save(pdf.name, pdf)
+        return task
 
 
 @csrf_exempt

@@ -5,7 +5,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from google.appengine.api import app_identity, mail
+try:
+    from google.appengine.api import app_identity, mail
+except:
+    pass
 
 from .models import Teacher, Course
 
