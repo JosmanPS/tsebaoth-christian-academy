@@ -15,6 +15,22 @@ from TCA.administration.utils import get_user_type
 from .models import Task, Response
 
 
+class TaskDetails(View):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        """Ask for login."""
+        return super(TaskDetails, self).dispatch(*args, **kwargs)
+
+    def get(self, request, task_id):
+        """Return task."""
+        task = get_object_or_404(Task, id=task_id)
+        context = {}
+        context['task'] = task
+        context['course'] = task.course
+        return render(request, 'tasks/task_details.html', context)
+
+
 class TaskView(View):
 
     @method_decorator(login_required)

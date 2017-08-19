@@ -8,8 +8,8 @@
     <table class="highlight">
         <thead>
             <tr>
-                <th>Curso</th>
                 <th>Tarea</th>
+                <th>Curso</th>
                 <th>Descripción</th>
                 <th>Fecha de entrega</th>
                 <th>Acciones</th>
@@ -18,8 +18,8 @@
         <tbody>
             {% for task in tasks %}
             <tr>
+                <td><a href="{% url 'tasks.details' task.id %}">{{ task.name }}</a></td>
                 <td>{{ task.course }}</td>
-                <td>{{ task.name }}</td>
                 <td>{{ task.description }}</td>
                 <td>{{ task.due_date }}</td>
                 <td>
