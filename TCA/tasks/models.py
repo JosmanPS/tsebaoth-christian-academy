@@ -71,6 +71,14 @@ class Task(TimeStamped):
     )
 
     @property
+    def embed_youtube(self):
+        """Transform raw youtube URL format to embed."""
+        youtube = self.youtube
+        embed = youtube.replace('watch?v=', 'embed/')
+        embed = embed + '?rel=0'
+        return embed
+
+    @property
     def students(self):
         """Show students assignated to this task."""
         return Student.objects.filter(grade=self.course.grade)

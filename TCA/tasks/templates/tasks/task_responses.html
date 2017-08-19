@@ -6,6 +6,10 @@
     <div class="row">
         <h1 class="header">{{ course.key }} - {{ task.name }}</h1>
     </div>
+    <div class="divider"></div>
+    <div class="row">
+        <h4>Vista previa</h4>
+    </div>
     {% if task.image %}
     <div id="image" class="row">
         <img class="responsive-img" style="width: 400px;" src="{{ task.image.url }}"/>
@@ -14,6 +18,12 @@
     <div class="row flow-text">
         <p>{{ task.description|urlize|linebreaks }}</p>
     </div>
+    {% if task.youtube %}
+    <div class="video-container">
+        <iframe width="853" height="480" src="{{ task.embed_youtube }}" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <br>
+    {% endif %}
     {% if task.pdf %}
     <div class="row">
         <div class="video-container">
@@ -93,6 +103,7 @@
             <i class="material-icons right">send</i>
         </button>
     </div>
+    <br><br><br>
 </div>
 
 <div id="response-modal" class="modal">
