@@ -28,6 +28,7 @@ class TaskDetails(View):
         context = {}
         context['task'] = task
         context['course'] = task.course
+        context['student'] = get_user_type(request.user) == 'student'
         return render(request, 'tasks/task_details.html', context)
 
 
@@ -160,10 +161,10 @@ class StudentResponse(View):
         response = get_object_or_404(Response, task=task,
                                      student__user=request.user)
         response.response = request.POST.get('response', '')
-        response.file = request.FILES.get('file', None)
-        print request.POST
-        print request.FILES
         response.save()
+        file = request.FILES.get('file', None)
+        if file is not None:
+            response.file.save(file.name, file)
         return redirect(reverse('dashboards.main'))
 
     def _validate_student_user(self, request):

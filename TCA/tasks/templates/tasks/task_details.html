@@ -67,5 +67,66 @@
         </div>
     </div>
     {% endif %}
+    {% if student and task.need_response %}
+    <br><br>
+    <div class="row" style="float:right">
+        <a href="#" class="waves-effect waves-light btn-large" onclick="open_response_modal()"><i class="material-icons right">send</i> Enviar respuesta</a>
+    </div>
+    <br><br><br><br>
+    {% endif %}
 </div>
+
+{% if student %}
+<!-- response modal -->
+<div id="response-modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <h4>Envío de respuesta</h4>
+        </div>
+        <div class="row"><p id="form-task-name">{{ task.course }} - {{ task.name }}</p></div>
+        <div class="row"><p id="form-task-description" class="caption">{{ task.description }}</p></div>
+        <div class="row">
+            <form id="response-form" class="col s12" action="{% url 'task.student.response' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" id="task-id" name="task_id" value={{ task.id }}>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="response-response" name="response" class="materialize-textarea">{{ task.response }}</textarea>
+                        <label for="response-response">Respuesta</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" name="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer" stye="float:right">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            <a href="#!" class=" modal-action waves-effect waves-green btn-flat" onclick="send_form()">Enviar <i class="material-icons right">send</i></a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    function open_response_modal() {
+        $('#response-modal').openModal();
+    }
+</script>
+<script type="text/javascript">
+    function send_form() {
+        $('#response-form').submit();
+    };
+</script>
 {% endblock %}
