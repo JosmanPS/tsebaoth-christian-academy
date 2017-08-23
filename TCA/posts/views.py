@@ -12,6 +12,7 @@ from django.views.generic import ListView, DetailView, View
 from TCA.administration.utils import get_user_type
 from TCA.administration.models import Course, Teacher, Father, Student
 from TCA.utils.models.shortcuts import get_object_or_none
+from TCA.utils.text import slugifile
 
 from TCA.posts.models import Post, ImagePost, PDFPost, FilePost
 
@@ -106,7 +107,7 @@ class PostView(View):
         image_post = get_object_or_none(ImagePost, post=post)
         if image_post is None:
             image_post = ImagePost(post=post)
-        image_post.image.save(image.name, image)
+        image_post.image.save(slugifile(image.name), image)
         return post
 
     def _add_file(self, post, request):
@@ -116,7 +117,7 @@ class PostView(View):
         file_post = get_object_or_none(FilePost, post=post)
         if file_post is None:
             file_post = FilePost(post=post)
-        file_post.file.save(file.name, file)
+        file_post.file.save(slugifile(file.name), file)
         return post
 
     def _add_pdf(self, post, request):
@@ -126,7 +127,7 @@ class PostView(View):
         pdf_post = get_object_or_none(PDFPost, post=post)
         if pdf_post is None:
             pdf_post = PDFPost(post=post)
-        pdf_post.pdf.save(pdf.name, pdf)
+        pdf_post.pdf.save(slugifile(pdf.name), pdf)
         return post
 
 

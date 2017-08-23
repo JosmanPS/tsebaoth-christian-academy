@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from dateutil.parser import parse
 
 from django.shortcuts import render, get_object_or_404, redirect
@@ -11,6 +13,7 @@ from django.utils.text import slugify
 
 from TCA.administration.models import Course
 from TCA.administration.utils import get_user_type
+from TCA.utils.text import slugifile
 
 from .models import Task, Response
 
@@ -82,21 +85,21 @@ class TaskView(View):
         image = request.FILES.get('image', None)
         if image is None:
             return task
-        task.image.save(image.name, image)
+        task.image.save(slugifile(image.name), image)
         return task
 
     def _add_file(self, task, request):
         file = request.FILES.get('file', None)
         if file is None:
             return task
-        task.file.save(file.name, file)
+        task.file.save(slugifile(file.name), file)
         return task
 
     def _add_pdf(self, task, request):
         pdf = request.FILES.get('pdf', None)
         if pdf is None:
             return task
-        task.pdf.save(pdf.name, pdf)
+        task.pdf.save(slugifile(pdf.name), pdf)
         return task
 
 
@@ -165,7 +168,7 @@ class StudentResponse(View):
         response.save()
         file = request.FILES.get('file', None)
         if file is not None:
-            response.file.save(file.name, file)
+            response.file.save(slugifile(file.name), file)
         return redirect(reverse('dashboards.main'))
 
     def _validate_student_user(self, request):
