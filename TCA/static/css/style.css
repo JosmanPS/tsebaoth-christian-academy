@@ -20,13 +20,19 @@ html{
 html,body{
   margin:0;
   padding:0;
+  min-height: 100%;
 }
 #content{
   min-height: 600px; /* Height of footer*/
+  padding-bottom: 200px;
 } 
+#wrapper{
+  min-height: 100%;
+}
 footer{
-    position: relative;
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
+    height: 200px;
 }

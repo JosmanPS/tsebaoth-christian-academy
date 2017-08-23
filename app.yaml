@@ -19,7 +19,6 @@
 runtime: python27
 api_version: 1
 threadsafe: yes
-version: 1
 
 handlers:
 - url: /static
@@ -33,4 +32,14 @@ handlers:
 libraries:
 - name: MySQLdb
   version: 1.2.5
+- name: ssl
+  version: 2.7.11
+- name: PIL
+  version: "1.1.7"
+
+skip_files:
+- lib/PIL*
+- lib/MySQLdb*
+- devops/media*
+
 # [END django_app]

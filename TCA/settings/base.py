@@ -25,7 +25,7 @@ SECRET_KEY = 'w5(saqi*9zuowapq7-h5+crqv-w*r=u*t#_8=vhs_z7gocc3u2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,11 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'easy_thumbnails',
+    'filer',
+    'mptt',
+
     'TCA.administration',
     'TCA.login',
     'TCA.dashboards',
     'TCA.tasks',
-    'TCA.attendance'
+    'TCA.attendance',
+    'TCA.posts',
+    'TCA.stream'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -74,7 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
-                'django.core.context_processors.request',
+                # 'django.core.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
             ]
@@ -85,6 +91,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'TCA.wsgi.application'
 
 
+# Storage
+GS_BUCKET_NAME = 'tca-files'
+
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
@@ -92,12 +101,12 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/tsebaoth-academy:tca-database',
+            'HOST': '/cloudsql/tca-platfotm:us-central1:tca-db',
             'NAME': 'tca',
-            'USER': 'tca',
-            'PASSWORD': 'tca_password'
+            'USER': 'root'
         }
     }
+    DEFAULT_FILE_STORAGE = 'storage.GoogleCloudStorage'
 else:
     DATABASES = {
         'default': {

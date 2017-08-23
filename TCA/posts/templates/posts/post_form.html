@@ -1,0 +1,110 @@
+{% extends '_layouts/base_with_menu.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1 class="header">Crear post en {{ course.key }} - {{ course.name }}</h1>
+    </div>
+    <div class="row">
+        <form class="col s12" method="post" {% if post %}action="{% url 'posts:form.modify' course.key post.id %}"{% else %}action="{% url 'posts:form' course.key %}"{% endif %} enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if post %}
+                <input type="hidden" name="id" value="{{ post.id }}">
+            {% endif %}
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="headline" name="headline" type="text" class="validate" {% if post %}value="{{ post.headline }}"{% endif %} required>
+                    <label for="headline">Encabezado</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="text" name="text" class="materialize-textarea">{% if post %}{{ post.text }}{% endif %}</textarea>
+                    <label for="text">Texto</label>
+                </div>
+            </div>
+            <div class="row">
+                {% if post.image %}<p><strong>Archivo actual:</strong> <a target="_blank" href="{{ post.image.image.url }}">{{ post.image.image.url }}</a><br><a href="#" onclick="delete_post('ImagePost', {{ post.image.id }});" class="red-text text-darken-4">X Eliminar</a></p>{% endif %}
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Imagen</span>
+                        <input type="file" id="image" name="image">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Inserta una imagen si deseas que se visualice en el post.">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% if post.pdf %}<p><strong>Archivo actual:</strong> <a target="_blank" href="{{ post.pdf.pdf.url }}">{{ post.pdf.pdf.url }}</a><br><a href="#" onclick="delete_post('PDFPost', {{ post.pdf.id }});" class="red-text text-darken-4">X Eliminar</a></p>{% endif %}
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Archivo PDF</span>
+                        <input type="file" id="pdf" name="pdf">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Inserta un archivo PDF si deseas que se visualice en el post.">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% if post.file %}<p><strong>Archivo actual:</strong> <a target="_blank" href="{{ post.file.file.url }}">{{ post.file.file.url }}</a><br><a href="#" onclick="delete_post('FilePost', {{ post.file.id }});" class="red-text text-darken-4">X Eliminar</a></p>{% endif %}
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Archivo adjunto</span>
+                        <input type="file" id="file" name="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Inserta un archivo si deseas que se adjunte al post.">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="float:right">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Guardar
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $('.datepicker').pickadate({
+        selectMonths: true,
+        selectYears: 1
+    });
+
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+
+    function delete_post(model, id) {
+        var delete_confirmation = confirm(`
+¿Estás seguro de eliminar el archivo?
+        `);
+        if (delete_confirmation == true) {
+            $.post(`/posts/delete/${model}/${id}/`, {'csrfmiddlewaretoken': csrftoken}, function() {
+                location.reload();
+            });
+        }
+    };
+
+</script>
+{% endblock %}

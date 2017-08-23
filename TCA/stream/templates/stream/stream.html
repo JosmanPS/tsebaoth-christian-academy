@@ -1,0 +1,17 @@
+{% extends '_layouts/base_with_menu.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h2 class="header">Stream {{ stream.grade }} grado</h2>
+    </div>
+    <div class="divider"></div>
+    <br>
+    <div class="row" id="stream">
+        <div class="video-container">
+            <iframe width="853" height="480" src="{{ stream.url }}" scrolling="no" allowfullscreen webkitallowfullscreen frameborder="0" style="border: 0 none transparent;"></iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

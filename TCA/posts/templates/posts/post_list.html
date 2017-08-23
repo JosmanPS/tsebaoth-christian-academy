@@ -1,0 +1,14 @@
+{% extends '_layouts/base_with_menu.html' %}
+
+{% block content %}
+<div class="container">
+    {% for post in post_list %}
+    <div>
+        {% include 'posts/_includes/post.html' with post=post %}
+    </div>
+    <br><br>
+    <div class="divider"></div>
+    <br>
+    {% endfor %}
+</div>
+{% endblock %}

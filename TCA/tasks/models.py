@@ -8,6 +8,14 @@ from TCA.administration.models import Course, Student
 from TCA.utils.models.mixins import TimeStamped
 
 
+def get_file_path(instance, filename):
+    """File path for tasks objects."""
+    return 'tasks/%s/files/%s' % (
+        instance.name,
+        filename
+    )
+
+
 class Task(TimeStamped):
     name = models.CharField(
         max_length=60,
@@ -26,6 +34,30 @@ class Task(TimeStamped):
     description = models.TextField(
         verbose_name='Descipción'
     )
+    image = models.ImageField(
+        verbose_name='Imágen',
+        upload_to=get_file_path,
+        blank=True,
+        null=True
+    )
+    youtube = models.CharField(
+        max_length=1024,
+        verbose_name='YouTube',
+        blank=True,
+        null=True
+    )
+    pdf = models.FileField(
+        verbose_name='Archivo PDF',
+        upload_to=get_file_path,
+        blank=True,
+        null=True
+    )
+    file = models.FileField(
+        verbose_name='Archivo adjunto',
+        upload_to=get_file_path,
+        blank=True,
+        null=True
+    )
     due_date = models.DateField(
         verbose_name='Fecha de entrega',
         db_index=True
@@ -37,6 +69,14 @@ class Task(TimeStamped):
         default=False,
         verbose_name='El alumno debe enviar respuesta'
     )
+
+    @property
+    def embed_youtube(self):
+        """Transform raw youtube URL format to embed."""
+        youtube = self.youtube
+        embed = youtube.replace('watch?v=', 'embed/')
+        embed = embed + '?rel=0'
+        return embed
 
     @property
     def students(self):
@@ -67,7 +107,7 @@ class Task(TimeStamped):
         verbose_name = 'Tarea'
         verbose_name_plural = 'Tareas'
         unique_together = ('course', 'slug')
-        ordering = ['course', 'due_date', 'slug']
+        ordering = ['-due_date', 'course', 'slug']
 
 
 class Response(TimeStamped):
