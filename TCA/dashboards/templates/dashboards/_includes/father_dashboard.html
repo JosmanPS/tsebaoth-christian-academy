@@ -50,7 +50,7 @@
             <tbody>
                 {% for task in student.get_10_tasks %}
                 <tr>
-                    <td>{{ task.name }}</td>
+                    <td><a href="{% url 'tasks.details' task.id %}">{{ task.name }}</a></td>
                     <td>{{ task.course }}</td>
                     <td>{{ task.description|truncatechars:50 }}</td>
                     <td>{{ task.due_date }}</td>

@@ -43,7 +43,7 @@ def allowed_posts(request, grade_id=None):
         if grade_id is not None and int(grade_id) in int_grades:
             grades = [grade_id]
         else:
-            grades = []
+            grades = int_grades
         posts = Post.objects.filter(course__grade__id__in=grades)
     elif user_type == 'student':
         student = Student.objects.get(user=user)
