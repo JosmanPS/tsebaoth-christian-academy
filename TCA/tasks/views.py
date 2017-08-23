@@ -64,7 +64,8 @@ class TaskView(View):
         task.youtube = request.POST.get('youtube', '')
         task.due_date = parse(request.POST['due_date'])
         task.value = request.POST['value']
-        task.need_response = request.POST.get('need_response', False)
+        need_response = request.POST.get('need_response', False)
+        task.need_response = need_response is not False
         task.save()
         task = self._add_media_elements(task, request)
         if initialize:
